@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\AndradI1\\.nuget\\packages\\": {}
+    "C:\\Users\\Igor\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\AndradI1\\Documents\\Igor\\Fumec\\ia\\get-games\\GetGamesIgdb\\GetGamesIgdb.csproj",
+      "projectUniqueName": "D:\\Projects\\GetGamesIgdb\\GetGamesIgdb.csproj",
       "projectName": "GetGamesIgdb",
-      "projectPath": "C:\\Users\\AndradI1\\Documents\\Igor\\Fumec\\ia\\get-games\\GetGamesIgdb\\GetGamesIgdb.csproj",
-      "packagesPath": "C:\\Users\\AndradI1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AndradI1\\Documents\\Igor\\Fumec\\ia\\get-games\\GetGamesIgdb\\obj\\",
+      "projectPath": "D:\\Projects\\GetGamesIgdb\\GetGamesIgdb.csproj",
+      "packagesPath": "C:\\Users\\Igor\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\GetGamesIgdb\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\AndradI1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Igor\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }

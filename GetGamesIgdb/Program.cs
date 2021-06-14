@@ -26,21 +26,88 @@ namespace GetGamesIgdb
 
     class Program
     {
+        private static readonly string FILE_PATH = "D:/Igor/Documents/fumec/ia/game.csv";
+        private static readonly string API_VERSION = "/v4";
+        private static readonly HttpClient httpClient = new HttpClient();
+
         static void Main(string[] args)
         {
-            int qntSoliGames = 0, qntGames = 0;
             List<Game> games = new List<Game>();
+            int qntSoliGames = 0;
+            InitHttpClient();
 
-            Console.WriteLine("Quantos jogos você deseja buscar? ");
-            bool result = int.TryParse(Console.ReadLine(), out qntSoliGames);
+            try
+            {
+                Console.WriteLine("Quantos jogos você deseja buscar? ");
+                bool result = int.TryParse(Console.ReadLine(), out qntSoliGames);
 
-            if (result)
-                games = RequestGame(qntSoliGames).Result;
+                if (result)
+                    games = RequestGame(qntSoliGames).Result;
 
-            //before your loop
+                if (games.Count > 0)
+                {
+                    games = BuildAlternativeNames(games).Result;
+                    CreateFile(games);
+                }
+            } catch (HttpRequestException e)
+            {
+                Console.WriteLine("\n>>>>> Houve erro na tentativa de fazer a requisição na API!");
+                Console.WriteLine(e);
+            } catch (JsonException e)
+            {
+                Console.WriteLine("\n>>>>> Houve erro na conversão dos dados da API!");
+                Console.WriteLine(e);
+            } catch (Exception e)
+            {
+                Console.WriteLine("\n>>>>> Houve erro inexperado com a execução do codigo!");
+                Console.WriteLine(e);
+            }
+            
+            Console.WriteLine("\n>>>>> Finalizado a busca pelos jogos!");
+        }
+
+        static void InitHttpClient()
+        {
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("Client-ID", "456868n0yqhvvf24k5avk9lpdn764h");
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer 8ipakf2yr586v8fmamd27589xghkq4");
+
+            httpClient.BaseAddress = new Uri("https://api.igdb.com");
+        }
+
+        static async Task<List<Game>> BuildAlternativeNames(List<Game> listGames)
+        {
+            foreach (Game game in listGames)
+            {
+                if (game.alternative_names != null)
+                {
+                    string ids = "";
+                    game.alternative_names.ForEach(x => ids += $",{x}");
+                    ids = ids.Remove(0, 1);
+
+                    List<AlternativesNames> listAlternativeGames = await ResquestAlternativeName(ids);
+
+                    listAlternativeGames.ForEach(alternative =>
+                    {
+                        if (game.alternatives == null)
+                            game.alternatives = new List<string>();
+
+                        game.alternatives.Add(alternative.name);
+                    });
+                }
+            }
+
+            return listGames;
+        }
+
+        static void CreateFile(List<Game> listGames)
+        {
+            Console.WriteLine($">>>>> Iniciado a criação do arquivo CSV.");
+
             var csv = new StringBuilder();
 
-            games.ForEach(game => 
+            listGames.ForEach(game =>
             {
                 string alternativeNames = "";
 
@@ -48,67 +115,30 @@ namespace GetGamesIgdb
                     game.alternatives = new List<string>();
 
                 game.alternatives.ForEach(name => alternativeNames += $",{name}");
-                csv.AppendLine($"{game.name},{alternativeNames}");
+                csv.AppendLine($"{game.name.Replace(',', Char.MinValue)},{alternativeNames}");
             });
 
-            //after your loop
-            File.WriteAllText("D:/Igor/Documents/fumec/ia/game.csv", csv.ToString());
+            if (File.Exists(FILE_PATH))
+                File.Delete(FILE_PATH);
 
-            Console.WriteLine("Finalizado a busca pelos jogos!");
+            File.WriteAllText(FILE_PATH, csv.ToString());
+
+            Console.WriteLine($">>>>> Finalizado a criação do arquivo CSV.");
+            Console.WriteLine($">>>>> O arquivo se encontra em: {FILE_PATH}");
         }
 
         static async Task<List<Game>> RequestGame(int qntSoliGames)
         {
-            HttpClient client = new HttpClient();
-            List<Game> listGames = new List<Game>();
+            var request = await httpClient.PostAsync($"{API_VERSION}/games", new StringContent($"fields name,alternative_names,slug; limit {qntSoliGames};", Encoding.UTF8, "text/plain"));
 
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("Client-ID", "456868n0yqhvvf24k5avk9lpdn764h");
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer 8ipakf2yr586v8fmamd27589xghkq4");
-
-            var streamTask = await client.PostAsync("https://api.igdb.com/v4/games", new StringContent($"fields name,alternative_names,slug; limit {qntSoliGames};", Encoding.UTF8, "text/plain"));
-            List<Game> response = await JsonSerializer.DeserializeAsync<List<Game>>(await streamTask.Content.ReadAsStreamAsync());
-
-            listGames.AddRange(await ResquestAlternativeName(response));
-
-            return listGames;
+            return await JsonSerializer.DeserializeAsync<List<Game>>(await request.Content.ReadAsStreamAsync());
         } 
 
-        static async Task<List<Game>> ResquestAlternativeName(List<Game> listGames)
+        static async Task<List<AlternativesNames>> ResquestAlternativeName(string ids)
         {
-            HttpClient client = new HttpClient();
+            var request = await httpClient.PostAsync($"{API_VERSION}/alternative_names", new StringContent($"fields name; where id = ({ids});", Encoding.UTF8, "text/plain"));
 
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("Client-ID", "456868n0yqhvvf24k5avk9lpdn764h");
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer 8ipakf2yr586v8fmamd27589xghkq4");
-
-            foreach (Game game in listGames)
-            {
-                if (game.alternative_names != null)
-                {
-                    List<int> alternativesIds = new List<int>();
-                    alternativesIds.AddRange(game.alternative_names);
-
-                    string text = "";
-                    alternativesIds.ForEach(x => text += $",{x}");
-                    text = text.Remove(0,1);
-
-                    var streamTask = await client.PostAsync("https://api.igdb.com/v4/alternative_names", new StringContent($"fields name; where id = ({text});", Encoding.UTF8, "text/plain"));
-                    List<AlternativesNames> response = await JsonSerializer.DeserializeAsync<List<AlternativesNames>>(await streamTask.Content.ReadAsStreamAsync());
-
-                    foreach (AlternativesNames alternative in response)
-                    {
-                        if (game.alternatives == null)
-                            game.alternatives = new List<string>();
-
-                        game.alternatives.Add(alternative.name);
-                    }
-                }
-            }
-
-            return listGames;
+            return await JsonSerializer.DeserializeAsync<List<AlternativesNames>>(await request.Content.ReadAsStreamAsync());
         }
     }
 }

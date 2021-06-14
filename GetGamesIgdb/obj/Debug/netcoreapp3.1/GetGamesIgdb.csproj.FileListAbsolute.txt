@@ -1,0 +1,13 @@
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\obj\Debug\netcoreapp3.1\GetGamesIgdb.csprojAssemblyReference.cache
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\obj\Debug\netcoreapp3.1\GetGamesIgdb.AssemblyInfoInputs.cache
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\obj\Debug\netcoreapp3.1\GetGamesIgdb.AssemblyInfo.cs
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\obj\Debug\netcoreapp3.1\GetGamesIgdb.csproj.CoreCompileInputs.cache
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\bin\Debug\netcoreapp3.1\GetGamesIgdb.exe
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\bin\Debug\netcoreapp3.1\GetGamesIgdb.deps.json
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\bin\Debug\netcoreapp3.1\GetGamesIgdb.runtimeconfig.json
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\bin\Debug\netcoreapp3.1\GetGamesIgdb.runtimeconfig.dev.json
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\bin\Debug\netcoreapp3.1\GetGamesIgdb.dll
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\bin\Debug\netcoreapp3.1\GetGamesIgdb.pdb
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\obj\Debug\netcoreapp3.1\GetGamesIgdb.dll
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\obj\Debug\netcoreapp3.1\GetGamesIgdb.pdb
+C:\Users\AndradI1\Documents\Igor\Fumec\ia\GetGamesIgdb\GetGamesIgdb\obj\Debug\netcoreapp3.1\GetGamesIgdb.genruntimeconfig.cache
